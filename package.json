@@ -14,5 +14,8 @@
     "url": "https://github.com/scarvalhojr/mycoin"
   },
   "author": "Sergio de Carvalho",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "zeppelin-solidity": "^1.11.0"
+  }
 }
