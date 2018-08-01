@@ -1,20 +1,34 @@
 // Version of Solidity compiler this program was written for
 pragma solidity ^0.4.19;
 
-// Our first contract is a faucet!
+import 'zeppelin-solidity/contracts/token/ERC20/StandardToken.sol';
+
+
+// A faucet for ERC20 token MAC
 contract Faucet {
 
-	// Give out ether to anyone who asks
-	function withdraw(uint withdraw_amount) public {
+  StandardToken public MyCoin;
+  address public MACOwner;
 
-    	// Limit withdrawal amount
-    	require(withdraw_amount <= 100000000000000000);
+  // Faucet constructor, provide the address of MyCoin contract and
+  // the owner address we will be approved to transferFrom
+  constructor(address _MyCoin, address _MACOwner) public {
 
-    	// Send the amount to the address that requested it
-    	msg.sender.transfer(withdraw_amount);
-    }
+    // Initialize the MyCoin from the address provided
+    MyCoin = StandardToken(_MyCoin);
+    MACOwner = _MACOwner;
+  }
 
-	// Accept any incoming amount
-	function () public payable {}
+  function withdraw(uint withdraw_amount) public {
+
+    // Limit withdrawal amount to 10 MAC
+    require(withdraw_amount <= 1000);
+
+    // Use the transferFrom function of MyCoin
+    MyCoin.transferFrom(MACOwner, msg.sender, withdraw_amount);
+  }
+
+  // REJECT any incoming ether
+  function () public payable { revert(); }
 
 }
